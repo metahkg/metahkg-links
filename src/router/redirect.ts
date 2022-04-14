@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { metahkgOrigin, linksCl } from "../common";
+import { metahkgDomain, linksCl } from "../common";
 import isInteger from "is-sn-integer";
 const router = Router();
 router.get("/:id", async (req, res) => {
@@ -13,7 +13,7 @@ router.get("/:id", async (req, res) => {
   }
   const id = Number(req.params.id) || req.params.id;
   if (typeof id === "number") {
-    res.redirect(301, `${metahkgOrigin}/thread/${id}`);
+    res.redirect(301, `https://${metahkgDomain}/thread/${id}`);
     return;
   }
   const url = (await linksCl.findOne({ id: id }))?.url;
@@ -22,6 +22,6 @@ router.get("/:id", async (req, res) => {
     res.send({ error: "Not found." });
     return;
   }
-  res.redirect(301, `${metahkgOrigin}${url}`);
+  res.redirect(301, `https://${metahkgDomain}${url}`);
 });
 export default router;
