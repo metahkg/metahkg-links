@@ -1,8 +1,6 @@
-FROM node:17 AS build
+FROM node:latest AS build
 
 WORKDIR /usr/src/app
-
-RUN yarn add typescript
 
 COPY package.json ./
 COPY yarn.lock ./
@@ -13,13 +11,14 @@ COPY . ./
 RUN yarn install
 RUN yarn build
 
-FROM node:17
+FROM node:latest
 
 WORKDIR /usr/src/app
 
 COPY ./package.json .
 COPY ./yarn.lock .
 COPY --from=build /usr/src/app/dist ./dist
+COPY --from=build /usr/src/app/node_modules ./node_modules
 
 RUN yarn install
 
