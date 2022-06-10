@@ -14,7 +14,7 @@
     "dotenv": "^16.0.0",
     "express": "^4.17.3",
     "is-sn-integer": "^0.3.0",
-    "mongodb": "^4.4.1"
+    "mongodb": "^4.6.0"
   },
   "devDependencies": {
     "@types/express": "^4.17.13",
