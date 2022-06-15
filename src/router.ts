@@ -1,5 +1,14 @@
-import { Router } from "express";
 import redirect from "./router/redirect";
-const router = Router();
-router.use(redirect);
-export default router;
+import { FastifyInstance, FastifyPluginOptions } from "fastify";
+
+export default function (
+    fastify: FastifyInstance,
+    opts: FastifyPluginOptions,
+    done: (e?: Error) => void
+) {
+    fastify.register(redirect);
+    fastify.get("/", async (req, res) => {
+        return res.code(301).redirect("https://gitlab.com/metahkg/metahkg-links");
+    });
+    done();
+}

@@ -1,15 +1,16 @@
-prettify:
+lint:
   image: node:latest
   script:
     - git checkout $CI_COMMIT_BRANCH
-    - npx prettier --check src || npx prettier --write src
-    - git config user.name wcyat-bot
-    - git config user.email bot@wcyat.me
-    - git commit -a -m prettify || exit 0
+    - yarn lint
+    - git config user.name metahkg-bot
+    - git config user.email bot@metahkg.org
+    - git commit -a -m lint || exit 0
     - git remote set-url origin https://wcyat:$gitlab_token@gitlab.com/metahkg/metahkg-links.git
     - git push origin $CI_COMMIT_BRANCH
   rules:
-    - if: $CI_COMMIT_AUTHOR != "wcyat-bot <bot@wcyat.me>"
+    - if: $CI_COMMIT_AUTHOR != "metahkg-bot <bot@metahkg.org>"
+
 docker-build:
   # Use the official docker image.
   image: docker:latest
