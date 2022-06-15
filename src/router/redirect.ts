@@ -1,27 +1,32 @@
-import { Router } from "express";
 import { metahkgDomain, linksCl } from "../common";
-import isInteger from "is-sn-integer";
-const router = Router();
-router.get("/:id", async (req, res) => {
-  if (
-    typeof req.params.id !== "string" ||
-    (req.params.id.length !== 7 && !isInteger(req.params.id))
-  ) {
-    res.status(400);
-    res.send({ error: "Bad request." });
-    return;
-  }
-  const id = Number(req.params.id) || req.params.id;
-  if (typeof id === "number") {
-    res.redirect(301, `https://${metahkgDomain}/thread/${id}`);
-    return;
-  }
-  const url = (await linksCl.findOne({ id: id }))?.url;
-  if (!url) {
-    res.status(404);
-    res.send({ error: "Not found." });
-    return;
-  }
-  res.redirect(301, `https://${metahkgDomain}${url}`);
-});
-export default router;
+import { FastifyInstance, FastifyPluginOptions, FastifyRequest } from "fastify";
+import { Type } from "@sinclair/typebox";
+import { ajv } from "../lib/ajv";
+
+export default function (
+    fastify: FastifyInstance,
+    opts: FastifyPluginOptions,
+    done: (e?: Error) => void
+) {
+    fastify.get("/:id", async (req: FastifyRequest<{ Params: { id: string } }>, res) => {
+        const id = Number(req.params.id) || req.params.id;
+
+        const schema = Type.Union([
+            Type.Integer({ minimum: 1 }),
+            Type.String({ minLength: 7, maxLength: 7 }),
+        ]);
+
+        if (!ajv.validate(schema, id))
+            return res.code(400).send({ error: "Bad request." });
+
+        if (typeof id === "number")
+            return res.code(301).redirect(`https://${metahkgDomain}/thread/${id}`);
+
+        const url = (await linksCl.findOne({ id: id }))?.url;
+
+        if (!url) return res.code(404).send({ error: "Not found." });
+
+        res.code(301).redirect(`https://${metahkgDomain}${url}`);
+    });
+    done();
+}
