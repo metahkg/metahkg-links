@@ -19,7 +19,7 @@
     "dotenv": "^16.0.0",
     "fastify": "^4.0.2",
     "mongodb": "^4.4.1",
-    "typescript": "^4.6.3"
+    "typescript": "^4.7.2"
   },
   "devDependencies": {
     "prettier": "^2.7.0"
