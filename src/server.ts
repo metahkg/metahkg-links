@@ -6,14 +6,14 @@ import Fastify from "fastify";
 dotenv.config();
 
 const fastify = Fastify({
-  logger: true,
+    logger: true,
 });
 
 fastify.register(router);
 
 client.connect().then(() => {
-  const port = Number(process.env.port || 3198);
-  fastify.listen({ port }, () => {
-    console.log(`listening at port ${port}`);
-  });
+    const port = Number(process.env.port || 3198);
+    fastify.listen({ port, host: "0.0.0.0" }, () => {
+        console.log(`listening at port ${port}`);
+    });
 });
