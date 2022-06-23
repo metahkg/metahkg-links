@@ -2,6 +2,7 @@ lint:
   image: node:latest
   script:
     - git checkout $CI_COMMIT_BRANCH
+    - yarn install
     - yarn lint
     - git config user.name metahkg-bot
     - git config user.email bot@metahkg.org
