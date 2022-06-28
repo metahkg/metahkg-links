@@ -3,7 +3,6 @@
   "version": "2.2.0",
   "description": "Metahkg links",
   "repository": "https://gitlab.com/metahkg/metahkg-links.git",
-  "author": "wcyat <sleep@wcyat.me>",
   "license": "AGPL-3.0-or-later",
   "scripts": {
     "start": "node dist/server.js",
