@@ -23,10 +23,18 @@ docker-build:
   # Default branch leaves tag empty (= latest tag)
   # All other branches are tagged with the escaped branch name (commit ref slug)
   script:
-    - docker build --pull -t "$CI_REGISTRY_IMAGE/$CI_COMMIT_BRANCH:latest" .
+    - docker build --build-arg REACT_APP_build=$CI_COMMIT_SHORT_SHA --pull -t "$CI_REGISTRY_IMAGE/$CI_COMMIT_BRANCH:latest" -t "$CI_REGISTRY_IMAGE/$CI_COMMIT_BRANCH:$CI_COMMIT_SHORT_SHA" -t "$CI_REGISTRY_IMAGE/$CI_COMMIT_BRANCH:$(node -e 'console.log(require("./package.json").version)')" .
     - docker push "$CI_REGISTRY_IMAGE/$CI_COMMIT_BRANCH:latest"
+    - docker push "$CI_REGISTRY_IMAGE/$CI_COMMIT_BRANCH:$CI_COMMIT_SHORT_SHA"
+    - docker push "$CI_REGISTRY_IMAGE/$CI_COMMIT_BRANCH:$(node -e 'console.log(require("./package.json").version)')"
   # Run this job in a branch where a Dockerfile exists
   rules:
     - if: $CI_COMMIT_BRANCH
       exists:
         - Dockerfile
+
+include:
+  - template: Auto-DevOps.gitlab-ci.yml
+
+sast:
+  stage: test
