@@ -1,16 +1,38 @@
+stages:
+  - lint
+  - test
+  - build
+  - deploy
+  - review
+  - dast
+  - staging
+  - canary
+  - production
+  - incremental rollout 10%
+  - incremental rollout 25%
+  - incremental rollout 50%
+  - incremental rollout 100%
+  - performance
+  - cleanup
+
 lint:
+  stage: lint
   image: node:latest
-  script:
+  before_script:
     - git checkout $CI_COMMIT_BRANCH
-    - yarn install
-    - yarn lint
     - git config user.name metahkg-bot
     - git config user.email bot@metahkg.org
+    - git remote set-url origin https://wcyat:$gitlab_token@gitlab.com/$CI_PROJECT_PATH
+  script:
+    - yarn install
+    - yarn lint
     - git commit -a -m lint || exit 0
-    - git remote set-url origin https://wcyat:$gitlab_token@gitlab.com/metahkg/metahkg-links.git
     - git push origin $CI_COMMIT_BRANCH
   rules:
-    - if: $CI_COMMIT_AUTHOR != "metahkg-bot <bot@metahkg.org>"
+    - if: $CI_COMMIT_AUTHOR != "metahkg-bot <bot@metahkg.org>" && ($CI_COMMIT_BRANCH == "dev" || $CI_COMMIT_BRANCH == "master")
+
+sast:
+  stage: test
 
 docker-build:
   image: docker:latest
@@ -26,7 +48,7 @@ docker-build:
     - docker push "$CI_REGISTRY_IMAGE/$CI_COMMIT_BRANCH:$CI_COMMIT_SHORT_SHA"
     - docker push "$CI_REGISTRY_IMAGE/$CI_COMMIT_BRANCH:$(node -e 'console.log(require("./package.json").version)')"
   rules:
-    - if: $CI_COMMIT_BRANCH
+    - if: "$CI_COMMIT_BRANCH"
       exists:
         - Dockerfile
 
@@ -44,10 +66,20 @@ tagging:
     - git tag "$tag"
     - git push --tags https://root:$gitlab_token@$CI_SERVER_HOST/$CI_PROJECT_PATH.git HEAD:${CI_COMMIT_BRANCH}
   rules:
-    - if: $CI_COMMIT_AUTHOR != "metahkg-bot <bot@metahkg.org>" && ($CI_COMMIT_BRANCH == "dev" || $CI_COMMIT_BRANCH == "master")
+    - if: $CI_COMMIT_AUTHOR != "metahkg-bot <bot@metahkg.org>"
+
+container_scanning:
+  stage: review
+  needs: ["docker-build"]
+  variables:
+    GIT_STRATEGY: fetch
+    CI_APPLICATION_REPOSITORY: "$CI_REGISTRY_IMAGE/$CI_COMMIT_BRANCH"
+    CI_APPLICATION_TAG: $CI_COMMIT_SHORT_SHA
+    CLAIR_OUTPUT: High
+  artifacts:
+    paths:
+      - gl-container-scanning-report.json
 
 include:
   - template: Auto-DevOps.gitlab-ci.yml
 
-sast:
-  stage: test
