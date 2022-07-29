@@ -1,6 +1,6 @@
 {
   "name": "metahkg-links",
-  "version": "3.3.0",
+  "version": "3.4.0",
   "description": "Metahkg links",
   "repository": "https://gitlab.com/metahkg/metahkg-links.git",
   "license": "AGPL-3.0-or-later",
@@ -12,15 +12,15 @@
     "lint": "prettier --write src"
   },
   "dependencies": {
-    "@sinclair/typebox": "^0.23.5",
+    "@sinclair/typebox": "^0.24.22",
     "ajv": "^8.11.0",
     "ajv-formats": "^2.1.1",
-    "dotenv": "^16.0.0",
-    "fastify": "^4.0.2",
-    "mongodb": "^4.4.1",
-    "typescript": "^4.6.3"
+    "dotenv": "^16.0.1",
+    "fastify": "^4.3.0",
+    "mongodb": "^4.8.1",
+    "typescript": "^4.7.4"
   },
   "devDependencies": {
-    "prettier": "^2.7.0"
+    "prettier": "^2.7.1"
   }
 }
