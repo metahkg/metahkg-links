@@ -13,7 +13,9 @@ RUN yarn build
 
 FROM node:18-alpine
 
-WORKDIR /usr/src/app
+RUN adduser user -D
+WORKDIR /home/user
+USER user
 
 COPY ./package.json .
 COPY ./yarn.lock .
