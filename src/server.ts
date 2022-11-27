@@ -12,7 +12,7 @@ const fastify = Fastify({
 fastify.register(router);
 
 client.connect().then(() => {
-    const port = Number(process.env.port || 3198);
+    const port = Number(process.env.PORT || process.env.port || 3198);
     fastify.listen({ port, host: "0.0.0.0" }, () => {
         console.log(`listening at port ${port}`);
     });
