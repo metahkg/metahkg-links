@@ -1,6 +1,6 @@
 FROM node:18-alpine AS build
 
-WORKDIR /usr/src/app
+WORKDIR /app
 
 COPY package.json ./
 COPY yarn.lock ./
@@ -13,13 +13,15 @@ RUN yarn build
 
 FROM node:18-alpine
 
-RUN adduser user -D
-WORKDIR /home/user
-USER user
+WORKDIR /app
 
 COPY ./package.json .
 COPY ./yarn.lock .
-COPY --from=build /usr/src/app/dist ./dist
-COPY --from=build /usr/src/app/node_modules ./node_modules
+COPY --from=build /app/dist ./dist
+COPY --from=build /app/node_modules ./node_modules
+
+RUN chown -Rf node:node /app
+
+USER node
 
 CMD yarn start
