@@ -80,7 +80,7 @@ tagging:
       when: never
     - if: $CI_COMMIT_AUTHOR != "metahkg-bot <bot@metahkg.org>"
       changes:
-	- package.json
+        - package.json
 
 container_scanning:
   stage: review
