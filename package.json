@@ -1,26 +1,33 @@
 {
   "name": "metahkg-links",
-  "version": "6.1.0",
+  "version": "6.3.0",
   "description": "Metahkg links",
   "repository": "https://gitlab.com/metahkg/metahkg-links.git",
   "license": "AGPL-3.0-or-later",
   "scripts": {
-    "start": "node dist/server.js",
-    "build": "npx tsc",
-    "deploy": "yarn run build && yarn run start",
-    "test": "exit 0",
-    "lint": "prettier --write src"
+    "start": "node dist/index.js",
+    "build": "tsc",
+    "deploy": "yarn build && yarn start",
+    "test": "tsc --noEmit",
+    "lint": "prettier --write src",
+    "prepare": "husky install"
   },
   "dependencies": {
-    "@sinclair/typebox": "^0.24.46",
-    "ajv": "^8.11.0",
+    "@fastify/rate-limit": "^7.6.0",
+    "@sinclair/typebox": "^0.25.20",
+    "ajv": "^8.12.0",
     "ajv-formats": "^2.1.1",
     "dotenv": "^16.0.3",
-    "fastify": "^4.10.2",
-    "mongodb": "^4.10.0",
-    "typescript": "^4.8.4"
+    "eslint": "^8.32.0",
+    "fastify": "^4.11.0",
+    "ioredis": "^5.2.5",
+    "mongodb": "^4.13.0",
+    "typescript": "^4.9.4"
   },
   "devDependencies": {
-    "prettier": "^2.7.1"
+    "@typescript-eslint/eslint-plugin": "^5.48.2",
+    "@typescript-eslint/parser": "^5.48.2",
+    "husky": "^8.0.0",
+    "prettier": "^2.8.3"
   }
 }
