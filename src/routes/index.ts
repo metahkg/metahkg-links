@@ -1,4 +1,4 @@
-import redirect from "./router/redirect";
+import redirect from "./redirect";
 import { FastifyInstance, FastifyPluginOptions } from "fastify";
 
 export default function (
