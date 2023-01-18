@@ -12,4 +12,4 @@ export const redis = config.REDIS_HOST
       })
     : null;
 
-redis.on("error", console.error);
+redis?.on("error", console.error);
