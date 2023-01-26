@@ -1,6 +1,6 @@
 import { metahkgDomain, linksCl } from "../lib/db";
 import { FastifyInstance, FastifyPluginOptions, FastifyRequest } from "fastify";
-import { Type } from "@sinclair/typebox";
+import { Type, Static } from "@sinclair/typebox";
 import { redis } from "../lib/redis";
 
 export default function (
@@ -9,16 +9,13 @@ export default function (
     done: (e?: Error) => void
 ) {
     const paramsSchema = Type.Object({
-        id: Type.Union([
-            Type.RegEx(/^\d{1,10}$/),
-            Type.String({ minLength: 7, maxLength: 7 }),
-        ]),
+        id: Type.RegEx(/^[1-9]\d{0,9}|[a-zA-Z\d]{7}$/),
     });
 
     fastify.get(
         "/:id",
         { schema: { params: paramsSchema } },
-        async (req: FastifyRequest<{ Params: { id: string } }>, res) => {
+        async (req: FastifyRequest<{ Params: Static<typeof paramsSchema> }>, res) => {
             const id = Number(req.params.id) || req.params.id;
 
             if (typeof id === "number")
