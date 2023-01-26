@@ -8,14 +8,16 @@ export default function (
     _opts: FastifyPluginOptions,
     done: (e?: Error) => void
 ) {
-    const schema = Type.Union([
-        Type.Integer({ minimum: 1 }),
-        Type.String({ minLength: 7, maxLength: 7 }),
-    ]);
+    const paramsSchema = Type.Object({
+        id: Type.Union([
+            Type.RegEx(/^\d{1,10}$/),
+            Type.String({ minLength: 7, maxLength: 7 }),
+        ]),
+    });
 
     fastify.get(
         "/:id",
-        { schema: { body: schema } },
+        { schema: { params: paramsSchema } },
         async (req: FastifyRequest<{ Params: { id: string } }>, res) => {
             const id = Number(req.params.id) || req.params.id;
 
