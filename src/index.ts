@@ -12,7 +12,7 @@ const fastify = Fastify({
     maxParamLength: 10,
 });
 
-fastify.setValidatorCompiler((opt) => ajv.compile(opt));
+fastify.setValidatorCompiler((opt) => ajv.compile(opt.schema));
 
 fastify.register(fastifyRateLimit, {
     global: true,
