@@ -1,6 +1,6 @@
 {
   "name": "metahkg-links",
-  "version": "6.3.0",
+  "version": "6.4.0",
   "description": "Metahkg links",
   "repository": "https://gitlab.com/metahkg/metahkg-links.git",
   "license": "AGPL-3.0-or-later",
@@ -14,19 +14,19 @@
   },
   "dependencies": {
     "@fastify/rate-limit": "^7.6.0",
-    "@sinclair/typebox": "^0.25.20",
+    "@sinclair/typebox": "^0.25.21",
     "ajv": "^8.12.0",
     "ajv-formats": "^2.1.1",
     "dotenv": "^16.0.3",
     "eslint": "^8.32.0",
-    "fastify": "^4.11.0",
-    "ioredis": "^5.2.5",
+    "fastify": "^4.12.0",
+    "ioredis": "^5.3.0",
     "mongodb": "^4.13.0",
     "typescript": "^4.9.4"
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^5.48.2",
-    "@typescript-eslint/parser": "^5.48.2",
+    "@typescript-eslint/eslint-plugin": "^5.49.0",
+    "@typescript-eslint/parser": "^5.49.0",
     "husky": "^8.0.0",
     "prettier": "^2.8.3"
   }
